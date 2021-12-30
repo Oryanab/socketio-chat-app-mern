@@ -10,6 +10,8 @@ export default function ChatPage() {
   const Dispatch = useDispatch();
   const currentRoom = useSelector((state) => state.currentRoom);
   const username = useSelector((state) => state.username);
+  const chats = useSelector((state) => state.chats);
+  console.log(chats);
 
   const handleUserLeave = (e) => {
     e.preventDefault();

@@ -14,6 +14,8 @@ export default function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    e.stopPropagation();
+
     if (inputUsername.length < 1) {
       alert("must fill a username");
       return;
@@ -23,11 +25,14 @@ export default function LoginPage() {
     } else {
       Dispatch(setUsername(inputUsername));
       Dispatch(setCurrentRoom(inputRoom));
-      // Join User To Room
-      // socketRef.current.emit("joinUser", {
-      //   room: inputRoom,
-      //   username: inputUsername,
-      // });
+      socketRef.current.emit("login", {
+        username: inputUsername,
+        room: inputRoom,
+      });
+      socketRef.current.emit("loginUser", {
+        username: inputUsername,
+        room: inputRoom,
+      });
     }
   };
 
@@ -39,7 +44,7 @@ export default function LoginPage() {
         </h1>
       </header>
       <main className="join-main">
-        <form action="chat.html">
+        <form>
           <div className="form-control">
             <label for="username">Username</label>
             <input

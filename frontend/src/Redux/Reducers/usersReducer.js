@@ -7,10 +7,17 @@ const usersReducer = (state = initialState, action) => {
     case GET_USERS:
       return [...state];
     case ADD_USER:
-      if (action.payload.username !== "ChatCord Bot") {
+      if (
+        !state.find((user) => user.username === action.payload.username) &&
+        action.payload.username !== "ChatCord"
+      ) {
         return [
           ...state,
-          { username: action.payload.username, room: action.payload.room },
+          {
+            id: action.payload.id,
+            username: action.payload.username,
+            room: action.payload.room,
+          },
         ];
       }
 

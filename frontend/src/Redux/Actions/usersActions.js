@@ -6,10 +6,10 @@ export const getUsers = () => {
   };
 };
 
-export const addUser = (username, room) => {
+export const addUser = (id, username, room) => {
   return {
     type: ADD_USER,
-    payload: { username, room },
+    payload: { id, username, room },
   };
 };
 

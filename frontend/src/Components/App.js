@@ -19,16 +19,18 @@ function App() {
   useEffect(() => {
     socketRef.current = io.connect("http://localhost:4000", {
       transport: ["websocket"],
-      query: { username, currentRoom },
     });
-    socketRef.current.on("messageBack", ({ id, room, username, message }) => {
+    socketRef.current.on("login", ({ id, room, username, message }) => {
       Dispatch(addChat(id, room, username, message));
-      Dispatch(addUser(username, room));
       console.log(chats);
-      console.log(users);
     });
     socketRef.current.on("message", ({ id, room, username, message }) => {
       Dispatch(addChat(id, room, username, message));
+      console.log(chats);
+    });
+
+    socketRef.current.on("addUser", ({ id, room, username }) => {
+      Dispatch(addUser(id, username, room));
     });
   }, []);
 

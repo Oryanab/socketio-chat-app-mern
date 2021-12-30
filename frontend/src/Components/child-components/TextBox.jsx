@@ -16,7 +16,7 @@ export default function TextBox() {
       alert("must enter text");
       return;
     } else {
-      socketRef.current.emit("user-sent-message", {
+      socketRef.current.emit("message", {
         room: currentRoom,
         username: username,
         message: message,
