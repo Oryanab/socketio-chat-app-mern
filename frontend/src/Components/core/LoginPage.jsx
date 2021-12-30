@@ -24,10 +24,10 @@ export default function LoginPage() {
       Dispatch(setUsername(inputUsername));
       Dispatch(setCurrentRoom(inputRoom));
       // Join User To Room
-      socketRef.current.emit("joinUser", {
-        room: inputRoom,
-        username: inputUsername,
-      });
+      // socketRef.current.emit("joinUser", {
+      //   room: inputRoom,
+      //   username: inputUsername,
+      // });
     }
   };
 
