@@ -8,7 +8,7 @@ const io = require("socket.io")(http, {
 
 io.on("connection", (socket) => {
   socket.on("message", ({ room, username, message }) => {
-    io.emit("message", {
+    io.to(room).emit("message", {
       id: socket.id,
       room,
       username,
@@ -26,11 +26,11 @@ io.on("connection", (socket) => {
 
   socket.on("login", ({ username, room }) => {
     socket.join(room);
-    io.emit("login", {
+    io.to(room).emit("login", {
       id: "6WC7huHocaDJm4H8AAAH",
       room,
       username: "ChatCord",
-      message: `Hello, ${username}`,
+      message: `Hello ${username.toUpperCase()}, Welcome to the ${room} room `,
     });
     socket.broadcast.to(room).emit("login", {
       id: "6WC7huHocaDJm4H8AAAH",
@@ -40,10 +40,12 @@ io.on("connection", (socket) => {
     });
   });
 
+  const userId = socket.id;
   socket.on("disconnect", () => {
-    io.emit("messageBack", {
-      name: "chatBot",
-      message: "bye " + socket.id,
+    io.emit("message", {
+      id: userId,
+      username: "ChatCord",
+      message: `${userId} left`,
     });
   });
 });

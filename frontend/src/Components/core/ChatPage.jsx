@@ -4,18 +4,21 @@ import Rooms from "../child-components/Rooms";
 import TextBox from "../child-components/TextBox";
 import Users from "../child-components/Users";
 import { removeUser } from "../../Redux/Actions/usersActions";
+import { setUsername } from "../../Redux/Actions/usernameAction";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function ChatPage() {
   const Dispatch = useDispatch();
   const currentRoom = useSelector((state) => state.currentRoom);
   const username = useSelector((state) => state.username);
-  const chats = useSelector((state) => state.chats);
-  console.log(chats);
+  const users = useSelector((state) => state.users);
 
   const handleUserLeave = (e) => {
     e.preventDefault();
+    console.log(users);
     Dispatch(removeUser(username));
+    Dispatch(setUsername(""));
+    console.log(users);
   };
 
   return (

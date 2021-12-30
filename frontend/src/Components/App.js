@@ -22,11 +22,9 @@ function App() {
     });
     socketRef.current.on("login", ({ id, room, username, message }) => {
       Dispatch(addChat(id, room, username, message));
-      console.log(chats);
     });
     socketRef.current.on("message", ({ id, room, username, message }) => {
       Dispatch(addChat(id, room, username, message));
-      console.log(chats);
     });
 
     socketRef.current.on("addUser", ({ id, room, username }) => {

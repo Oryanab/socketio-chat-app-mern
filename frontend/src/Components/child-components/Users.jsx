@@ -5,7 +5,6 @@ export default function Users() {
   const users = useSelector((state) => state.users);
   const currentRoom = useSelector((state) => state.currentRoom);
   let usersInRoom = users.filter((user) => user.room === currentRoom);
-  console.log(users);
 
   return (
     <div>
