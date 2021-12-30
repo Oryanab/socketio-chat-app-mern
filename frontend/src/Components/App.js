@@ -18,11 +18,9 @@ function App() {
     socketRef.current = io.connect("http://localhost:4000");
     socketRef.current.on("messageBack", ({ id, room, username, message }) => {
       Dispatch(addChat(id, room, username, message));
-      console.log(chats);
     });
     socketRef.current.on("new-user", ({ username, room }) => {
       Dispatch(addUser(username, room));
-      console.log(users);
     });
   }, []);
 

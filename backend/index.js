@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
       )
     );
 
-    // message for everyone
+    //message for everyone
     socket.broadcast
       .to(room)
       .emit(
@@ -46,20 +46,20 @@ io.on("connection", (socket) => {
       );
   });
 
-  socket.on("new-user", ({ username, room }) => {
-    io.emit("new-user", { username, room });
-  });
+  // socket.on("new-user", ({ username, room }) => {
+  //   //io.emit("new-user", { username, room });
+  // });
 
-  socket.on("message", ({ id, room, username, message }) => {
-    io.emit("messageBack", { id, room, username, message });
-  });
+  // socket.on("message", ({ id, room, username, message }) => {
+  //   io.emit("message", { id, room, username, message });
+  // });
 
-  socket.on("special treat", ({ name }) => {
-    io.emit("messageBack", {
-      name: "chatBot",
-      message: name + " clicked a special treat",
-    });
-  });
+  // socket.on("special treat", ({ name }) => {
+  //   io.emit("messageBack", {
+  //     name: "chatBot",
+  //     message: name + " clicked a special treat",
+  //   });
+  // });
 
   socket.on("disconnect", () => {
     io.emit("messageBack", {

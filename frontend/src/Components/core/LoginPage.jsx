@@ -3,6 +3,7 @@ import { setCurrentRoom } from "../../Redux/Actions/currentRoomAction";
 import { setUsername } from "../../Redux/Actions/usernameAction";
 import { useDispatch, useSelector } from "react-redux";
 import { SocketContext } from "../socketContext";
+import { addUser } from "../../Redux/Actions/usersActions";
 
 export default function LoginPage() {
   const [inputUsername, setInputUsername] = useState("");
@@ -22,11 +23,7 @@ export default function LoginPage() {
     } else {
       Dispatch(setUsername(inputUsername));
       Dispatch(setCurrentRoom(inputRoom));
-      //Dispatch(addUser(inputUsername, inputRoom));
-      socketRef.current.emit("new-user", {
-        username: inputUsername,
-        room: inputRoom,
-      });
+      Dispatch(addUser(inputUsername, inputRoom));
     }
 
     // Join User To Room
