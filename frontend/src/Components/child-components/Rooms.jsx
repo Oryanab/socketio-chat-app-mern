@@ -15,9 +15,8 @@ export default function Rooms() {
 
   return (
     <div>
-      <h3>
-        <i className="fas fa-comments"></i>Select Room:
-      </h3>
+      <h2 style={{ color: "gold" }}>Select Room:</h2>
+
       <ul id="rooms">
         <>
           {rooms.map((room) => (

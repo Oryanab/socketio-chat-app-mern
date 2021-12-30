@@ -17,48 +17,37 @@ const formatMessage = (id, room, username, message) => {
   };
 };
 
-io.on("connection", (socket) => {
-  socket.on("joinUser", ({ room, username }) => {
-    // join the user to the room
-    socket.join(room);
-    // message for new user
-    io.emit(
-      "messageBack",
-      formatMessage(
-        socket.id,
-        room,
-        chatCordBot,
-        `Hello, ${username}, Welcome to the ${room} chat`
-      )
-    );
+const connectedUsers = {};
 
-    //message for everyone
-    socket.broadcast
-      .to(room)
-      .emit(
-        "messageBack",
-        formatMessage(
-          socket.id,
-          room,
-          chatCordBot,
-          `${username} has joined the chat`
-        )
-      );
+io.on("connection", (socket) => {
+  socket.join(socket.handshake.query.room);
+
+  io.emit(
+    "messageBack",
+    formatMessage(
+      socket.id,
+      socket.handshake.query.room,
+      chatCordBot,
+      `Hello, ${socket.handshake.query.username}, Welcome to the ${socket.handshake.query.room} chat`
+    )
+  );
+
+  socket.on("user-sent-message", ({ room, username, message }) => {
+    io.emit("message", formatMessage(socket.id, room, username, message));
   });
 
-  // socket.on("new-user", ({ username, room }) => {
-  //   //io.emit("new-user", { username, room });
-  // });
-
-  // socket.on("message", ({ id, room, username, message }) => {
-  //   io.emit("message", { id, room, username, message });
-  // });
-
-  // socket.on("special treat", ({ name }) => {
-  //   io.emit("messageBack", {
-  //     name: "chatBot",
-  //     message: name + " clicked a special treat",
-  //   });
+  // socket.on("joinUser", ({ room, username }) => {
+  //   socket.broadcast
+  //     .to(room)
+  //     .emit(
+  //       "messageBack",
+  //       formatMessage(
+  //         socket.id,
+  //         room,
+  //         chatCordBot,
+  //         `${username} has joined the chat`
+  //       )
+  //     );
   // });
 
   socket.on("disconnect", () => {

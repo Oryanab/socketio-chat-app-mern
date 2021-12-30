@@ -8,9 +8,7 @@ export default function Users() {
 
   return (
     <div>
-      <h3>
-        <i className="fas fa-users"></i> Users
-      </h3>
+      <h2 style={{ color: "gold" }}>Room Participants:</h2>
       <ul id="users">
         <>
           {usersInRoom.map((user) => (

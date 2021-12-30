@@ -13,22 +13,29 @@ function App() {
   const Dispatch = useDispatch();
   const chats = useSelector((state) => state.chats);
   const users = useSelector((state) => state.users);
+  const currentRoom = useSelector((state) => state.users);
+  const username = useSelector((state) => state.username);
 
   useEffect(() => {
-    socketRef.current = io.connect("http://localhost:4000");
+    socketRef.current = io.connect("http://localhost:4000", {
+      transport: ["websocket"],
+      query: { username, currentRoom },
+    });
     socketRef.current.on("messageBack", ({ id, room, username, message }) => {
       Dispatch(addChat(id, room, username, message));
-    });
-    socketRef.current.on("new-user", ({ username, room }) => {
       Dispatch(addUser(username, room));
+      console.log(chats);
+      console.log(users);
+    });
+    socketRef.current.on("message", ({ id, room, username, message }) => {
+      Dispatch(addChat(id, room, username, message));
     });
   }, []);
 
   return (
     <div>
       <SocketContext.Provider value={socketRef}>
-        <LoginPage />
-        <ChatPage />
+        <>{username.length < 1 ? <LoginPage /> : <ChatPage />}</>
       </SocketContext.Provider>
     </div>
   );

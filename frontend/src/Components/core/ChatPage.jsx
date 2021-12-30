@@ -33,9 +33,7 @@ export default function ChatPage() {
       </header>
       <main className="chat-main">
         <div className="chat-sidebar">
-          <h3>
-            <i className="fas fa-comments"></i> Current Room:
-          </h3>
+          <h2 style={{ color: "gold" }}>Current Room:</h2>
           <h4>{currentRoom}</h4> <br />
           <Rooms />
           <br />

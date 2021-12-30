@@ -1,23 +1,6 @@
 import { GET_CHATS, ADD_CHAT } from "../Types/types";
 
-let initialState = [
-  {
-    id: 12345,
-    room: "javascript",
-    username: "oryan",
-    time: "9:12pm",
-    message:
-      " Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,repudiandae.",
-  },
-  {
-    id: 12345,
-    room: "javascript",
-    username: "oryan",
-    time: "9:12pm",
-    message:
-      " Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi,repudiandae.",
-  },
-];
+let initialState = [];
 
 const chatsReducer = (state = initialState, action) => {
   switch (action.type) {

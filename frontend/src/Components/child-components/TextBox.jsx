@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { addChat } from "../../Redux/Actions/chatsActions";
 import { useDispatch, useSelector } from "react-redux";
+import { SocketContext } from "../socketContext";
 
 export default function TextBox() {
   const [message, setMessage] = useState("");
   const Dispatch = useDispatch();
   const username = useSelector((state) => state.username);
   const currentRoom = useSelector((state) => state.currentRoom);
+  const socketRef = useContext(SocketContext);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -14,7 +16,12 @@ export default function TextBox() {
       alert("must enter text");
       return;
     } else {
-      Dispatch(addChat(currentRoom, username, message));
+      socketRef.current.emit("user-sent-message", {
+        room: currentRoom,
+        username: username,
+        message: message,
+      });
+      setMessage("");
     }
   };
 
@@ -31,11 +38,14 @@ export default function TextBox() {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
-          onClick={(e) => handleSendMessage(e)}
+          onClick={(e) => {
+            handleSendMessage(e);
+            document.getElementById("msg").value = "";
+          }}
           type="button"
           className="btn"
         >
-          <i className="fas fa-paper-plane"></i> Send
+          Send
         </button>
       </form>
     </div>
