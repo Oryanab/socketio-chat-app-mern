@@ -6,13 +6,52 @@ const io = require("socket.io")(http, {
   },
 });
 
+const chatCordBot = "ChatCord Bot";
+
+const formatMessage = (id, room, username, message) => {
+  return {
+    id,
+    room,
+    username,
+    message,
+  };
+};
+
 io.on("connection", (socket) => {
-  socket.on("message", ({ name, message }) => {
-    io.emit("messageBack", { name, message });
+  socket.on("joinUser", ({ room, username }) => {
+    // join the user to the room
+    socket.join(room);
+    // message for new user
+    io.emit(
+      "messageBack",
+      formatMessage(
+        socket.id,
+        room,
+        chatCordBot,
+        `Hello, ${username}, Welcome to the ${room} chat`
+      )
+    );
+
+    // message for everyone
+    socket.broadcast
+      .to(room)
+      .emit(
+        "messageBack",
+        formatMessage(
+          socket.id,
+          room,
+          chatCordBot,
+          `${username} has joined the chat`
+        )
+      );
   });
 
-  socket.on("newUser", ({ name }) => {
-    io.emit("messageBack", { name: "chatBot", message: "hello " + name });
+  socket.on("new-user", ({ username, room }) => {
+    io.emit("new-user", { username, room });
+  });
+
+  socket.on("message", ({ id, room, username, message }) => {
+    io.emit("messageBack", { id, room, username, message });
   });
 
   socket.on("special treat", ({ name }) => {
@@ -22,7 +61,7 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("disconnect", ({ name }) => {
+  socket.on("disconnect", () => {
     io.emit("messageBack", {
       name: "chatBot",
       message: "bye " + socket.id,

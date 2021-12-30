@@ -1,22 +1,27 @@
 import React from "react";
+import { setCurrentRoom } from "../../Redux/Actions/currentRoomAction";
+import { switchUserRoom } from "../../Redux/Actions/usersActions";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Rooms() {
-  const rooms = [
-    "javascript",
-    "javascript",
-    "javascript",
-    "javascript",
-    "javascript",
-  ];
+  const rooms = ["JavaScript", "Python", "PHP", "C#", "Ruby", "Java"];
+  const Dispatch = useDispatch();
+  const username = useSelector((state) => state.username);
+
+  const handleRoomClick = (e) => {
+    Dispatch(setCurrentRoom(e.target.textContent));
+    Dispatch(switchUserRoom(username, e.target.textContent));
+  };
+
   return (
     <div>
       <h3>
-        <i class="fas fa-comments"></i> Room Name:
+        <i className="fas fa-comments"></i>Select Room:
       </h3>
       <ul id="rooms">
         <>
           {rooms.map((room) => (
-            <li className="li-element">
+            <li onClick={(e) => handleRoomClick(e)} className="li-element">
               <h4>{room}</h4>
             </li>
           ))}

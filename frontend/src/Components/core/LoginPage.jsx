@@ -1,16 +1,51 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { setCurrentRoom } from "../../Redux/Actions/currentRoomAction";
+import { setUsername } from "../../Redux/Actions/usernameAction";
+import { useDispatch, useSelector } from "react-redux";
+import { SocketContext } from "../socketContext";
 
 export default function LoginPage() {
+  const [inputUsername, setInputUsername] = useState("");
+  const [inputRoom, setInputRoom] = useState("JavaScript");
+  const users = useSelector((state) => state.users);
+  const socketRef = useContext(SocketContext);
+  const Dispatch = useDispatch();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (inputUsername.length < 1) {
+      alert("must fill a username");
+      return;
+    } else if (users.find((user) => user.username === inputUsername)) {
+      alert("user name taken");
+      return;
+    } else {
+      Dispatch(setUsername(inputUsername));
+      Dispatch(setCurrentRoom(inputRoom));
+      //Dispatch(addUser(inputUsername, inputRoom));
+      socketRef.current.emit("new-user", {
+        username: inputUsername,
+        room: inputRoom,
+      });
+    }
+
+    // Join User To Room
+    socketRef.current.emit("joinUser", {
+      room: inputRoom,
+      username: inputUsername,
+    });
+  };
+
   return (
-    <div class="join-container">
-      <header class="join-header">
+    <div className="join-container">
+      <header className="join-header">
         <h1>
-          <i class="fas fa-smile"></i> ChatCord
+          <i className="fas fa-smile"></i> ChatCord
         </h1>
       </header>
-      <main class="join-main">
+      <main className="join-main">
         <form action="chat.html">
-          <div class="form-control">
+          <div className="form-control">
             <label for="username">Username</label>
             <input
               type="text"
@@ -18,9 +53,27 @@ export default function LoginPage() {
               id="username"
               placeholder="Enter username..."
               required
+              defaultValue={inputUsername}
+              onChange={(e) => setInputUsername(e.target.value)}
             />
           </div>
-          <button type="submit" class="btn">
+          <div className="form-control">
+            <label for="room">Room</label>
+            <select
+              defaultValue={inputRoom}
+              onChange={(e) => setInputRoom(e.target.value)}
+              name="room"
+              id="room"
+            >
+              <option value="JavaScript">JavaScript</option>
+              <option value="Python">Python</option>
+              <option value="PHP">PHP</option>
+              <option value="C#">C#</option>
+              <option value="Ruby">Ruby</option>
+              <option value="Java">Java</option>
+            </select>
+          </div>
+          <button onClick={(e) => handleLogin(e)} type="button" className="btn">
             Join Chat
           </button>
         </form>

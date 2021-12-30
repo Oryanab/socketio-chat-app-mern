@@ -192,3 +192,8 @@ a {
   cursor: pointer;
   background-color: red;
 }
+
+.sidebar-title {
+  background-color: #fff;
+  border-radius: 1vh;
+}
