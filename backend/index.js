@@ -41,12 +41,14 @@ io.on("connection", (socket) => {
   });
 
   const userId = socket.id;
-  socket.on("disconnect", () => {
+  socket.on("forceDisconnect", ({ room }) => {
     io.emit("message", {
       id: userId,
+      room,
       username: "ChatCord",
       message: `${userId} left`,
     });
+    socket.disconnect();
   });
 });
 

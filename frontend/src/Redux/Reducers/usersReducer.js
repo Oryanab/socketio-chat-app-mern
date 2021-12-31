@@ -23,13 +23,13 @@ const usersReducer = (state = initialState, action) => {
 
     case REMOVE_USER:
       const newState = state.filter((user) => user !== action.payload.username);
+      console.log(newState);
       state = newState;
+
       return [...state];
 
     case SWITCH_ROOM:
-      let currentUser = state.find(
-        (user) => user.username === action.payload.username
-      );
+      let currentUser = state.find((user) => user === action.payload.username);
       currentUser.room = action.payload.room;
       return [...state];
     default:
