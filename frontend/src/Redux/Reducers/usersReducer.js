@@ -29,7 +29,9 @@ const usersReducer = (state = initialState, action) => {
       return [...state];
 
     case SWITCH_ROOM:
-      let currentUser = state.find((user) => user === action.payload.username);
+      let currentUser = state.find(
+        (user) => user.username === action.payload.username
+      );
       currentUser.room = action.payload.room;
       return [...state];
     default:

@@ -40,6 +40,40 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("switch-room", ({ username, room }) => {
+    socket.join(room);
+    io.to(room).emit("message", {
+      id: "6WC7huHocaDJm4H8AAAH",
+      room,
+      username: "ChatCord",
+      message: `Hello ${username.toUpperCase()}, Welcome to the ${room} room `,
+    });
+    socket.broadcast.to(room).emit("message", {
+      id: "6WC7huHocaDJm4H8AAAH",
+      room,
+      username: "ChatCord",
+      message: `${username} joined the chat`,
+    });
+  });
+
+  socket.on("switch-private", ({ username, room, participants }) => {
+    io.to(room).emit("message", {
+      id: "6WC7huHocaDJm4H8AAAH",
+      room,
+      username: "ChatCord",
+      message: `Hello ${username.toUpperCase()}, Welcome to a chat with ${participants}! `,
+    });
+  });
+
+  // socket.on("private-message", ({ room, username, message }) => {
+  //   io.to(room).emit("message", {
+  //     id: socket.id,
+  //     room,
+  //     username,
+  //     message,
+  //   });
+  // });
+
   const userId = socket.id;
   socket.on("forceDisconnect", ({ room }) => {
     io.emit("message", {

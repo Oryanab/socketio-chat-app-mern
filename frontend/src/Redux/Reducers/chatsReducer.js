@@ -1,4 +1,4 @@
-import { GET_CHATS, ADD_CHAT } from "../Types/types";
+import { GET_CHATS, ADD_CHAT, RESET_CHAT } from "../Types/types";
 
 let initialState = [];
 
@@ -19,6 +19,10 @@ const chatsReducer = (state = initialState, action) => {
       }
 
     case GET_CHATS:
+      return [...state];
+
+    case RESET_CHAT:
+      state.length = 0;
       return [...state];
     default:
       return state;
